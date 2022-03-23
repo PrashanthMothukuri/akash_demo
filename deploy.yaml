@@ -1,0 +1,43 @@
+https://github.com/ovrclk/awesome-akash/blob/master/jenkins/deploy.yaml
+
+---
+version: "2.0"
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    expose:
+      - port: 8080
+        as: 80
+        to:
+          - global: true
+      - port: 50000
+        to:
+          - global: true
+profiles:
+  compute:
+    jenkins:
+      resources:
+        cpu:
+          units: 1.0
+        memory:
+          size: 1Gi
+        storage:
+          size: 5Gi
+  placement:
+    akash:
+      attributes:
+        host: akash
+      signedBy:
+        anyOf:
+          - "akash1sly3ry4c9zq086kyk9uza7n7w2tv4kdsfyfpsh"
+      pricing:
+        jenkins:
+          denom: uakt
+          amount: 10
+
+deployment:
+  jenkins:
+    akash:
+      profile: jenkins
+      count: 1
