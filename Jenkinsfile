@@ -11,7 +11,7 @@ pipeline {
 		stage('Deploy') {
 			steps {
 					echo "Building the checked out project ";
-					sh 'docker-compose -f deploy.yaml up'
+					bat 'docker-compose -f deploy.yaml up'
 			}
 		}
 		
