@@ -2,40 +2,40 @@
 version: "2.0"
 
 services:
-  jenkins:
-    image: jenkins/jenkins:lts
+  web:
+    image: tombeynon/akash-hello-world:release-v0.1.1
     expose:
-      - port: 8080
-        as: 80
+      - port: 8082
+        as: 8082
+        accept:
+          - www.myfirstakashdemo.com
         to:
           - global: true
-      - port: 50000
-        to:
-          - global: true
+
 profiles:
   compute:
-    jenkins:
+    web:
       resources:
         cpu:
-          units: 1.0
+          units: 0.5
         memory:
-          size: 1Gi
+          size: 512Mi
         storage:
-          size: 5Gi
+          size: 512Mi
   placement:
-    akash:
+    dcloud:
       attributes:
         host: akash
       signedBy:
         anyOf:
           - "akash1sly3ry4c9zq086kyk9uza7n7w2tv4kdsfyfpsh"
       pricing:
-        jenkins:
+        web:
           denom: uakt
-          amount: 10
+          amount: 100
 
 deployment:
-  jenkins:
-    akash:
-      profile: jenkins
+  web:
+    dcloud:
+      profile: web
       count: 1
